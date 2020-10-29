@@ -1,6 +1,6 @@
 from PIL import Image
 from django.core.files.base import ContentFile
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import SimpleUploadedFile, UploadedFile
 from django.test import TestCase, Client
 from django.urls import reverse
 # from .factories import UserFactory
@@ -59,3 +59,27 @@ class UploadTest(TestCase):
         response = myClient.post(reverse('resnet50:index'), form_data)
         self.assertFormError(response, 'form', 'image', 'Upload a valid image. The file you uploaded was either not an image or a corrupted image.') #Check if error has occurred
         self.assertFalse(os.path.exists('media/images/front.png')) #Check if file has been uploaded.
+
+    #test for predictions
+    def test_prediction(self):
+        myClient = Client()
+
+        # Upload a dog photo
+        dog = Image.open('media/dog.jpg')
+        data = BytesIO()
+        dog.save(data, 'png')
+        data.seek(0)
+
+        avatar_file = SimpleUploadedFile('dog.png', data.getvalue(), content_type="image/png")
+        form_data = {'image': avatar_file}
+        response = myClient.post(reverse('resnet50:index'), form_data)
+        
+
+        ## Assert prediction for dog
+        # self.assertEqual(response.context[0]['prediction'], 'Doggo')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(os.path.exists('media/images/dog.png')) #Check if file has been uploaded.
+
+        files = glob.glob('media/images/dog*')
+        for file in files:
+            os.remove(file)        
