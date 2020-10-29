@@ -6,10 +6,11 @@ from .forms import UploadFileForm
 
 # Create your views here.
 def index(request):
+    prediction = 'Doggo'
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         # print(request.FILES)
-        print(form) 
+        # print(form) 
         if form.is_valid():
             # print("Valid form")
             form.save()
@@ -19,7 +20,5 @@ def index(request):
         form = UploadFileForm()
     return render(request, "resnet50/index.html", {
         'form' : form,
+        'prediction' : prediction,
     })
-
-def success(request):
-    return HttpResponse("Upload successful!")
