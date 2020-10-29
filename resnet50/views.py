@@ -1,18 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 
-from django import forms
-
-class UploadFileForm(forms.Form):
-    file = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class':'custom-file-input'}));
+import json
+from .forms import UploadFileForm
 
 # Create your views here.
 def index(request):
-    form = UploadFileForm()
     if request.method == "POST":
-        form = UploadFileForm(request.POST)
-        return render(request, "resnet50/index.html")
+        form = UploadFileForm(request.POST, request.FILES)
+        # print(request.FILES)
+        print(form) 
+        if form.is_valid():
+            # print("Valid form")
+            form.save()
+        # return redirect ("resnet50:success")
+        # return render(request, "resnet50/index.html")
     else:
-        return render(request, "resnet50/index.html", {
-            'form' : form,
-        })
+        form = UploadFileForm()
+    return render(request, "resnet50/index.html", {
+        'form' : form,
+    })
+
+def success(request):
+    return HttpResponse("Upload successful!")
