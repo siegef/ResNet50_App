@@ -76,10 +76,48 @@ class UploadTest(TestCase):
         
 
         ## Assert prediction for dog
-        # self.assertEqual(response.context[0]['prediction'], 'Doggo')
+        self.assertEqual(response.context[0]['prediction'], 'golden_retriever')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(os.path.exists('media/images/dog.png')) #Check if file has been uploaded.
 
         files = glob.glob('media/images/dog*')
         for file in files:
             os.remove(file)        
+
+    def test_multiple(self):
+        myClient = Client()
+
+        # Upload a dog photo
+        dog = Image.open('media/dog.jpg')
+        data = BytesIO()
+        dog.save(data, 'png')
+        data.seek(0)
+
+        avatar_file = SimpleUploadedFile('dog.png', data.getvalue(), content_type="image/png")
+        form_data = {'image': avatar_file}
+        response = myClient.post(reverse('resnet50:index'), form_data)
+        
+        ## Assert prediction for dog
+        self.assertEqual(response.context[0]['prediction'], 'golden_retriever')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(os.path.exists('media/images/dog.png')) #Check if file has been uploaded.
+
+        # Upload a cat photo
+        dog = Image.open('media/cat.jpg')
+        data = BytesIO()
+        dog.save(data, 'png')
+        data.seek(0)
+
+        avatar_file = SimpleUploadedFile('cat.png', data.getvalue(), content_type="image/png")
+        form_data = {'image': avatar_file}
+        response = myClient.post(reverse('resnet50:index'), form_data)
+        
+        ## Assert prediction for dog
+        self.assertEqual(response.context[0]['prediction'], 'Egyptian_cat')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(os.path.exists('media/images/dog.png')) #Check if file has been deleted.
+        self.assertTrue(os.path.exists('media/images/cat.png')) #Check if file has been uploaded.
+
+        files = glob.glob('media/images/cat*')
+        for file in files:
+            os.remove(file) 
