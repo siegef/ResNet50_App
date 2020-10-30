@@ -13,7 +13,6 @@ import glob
 def index(request):
     prediction = ''
     filename = ''
-
     if request.method == "POST":
         files = glob.glob('media/images/*')
         for file in files:
