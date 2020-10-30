@@ -4,9 +4,16 @@
 {% endblock stylesheets %}
 
 {% block body %}
-    <div class="d-flex" style="height:33vh"></div>
+    <div class="d-flex" style="height:22vh"></div>
     <div class="container">
         <div class="d-flex flex-column align-items-center">
+            {% if img %}
+                <div class="p-2"><img src="{{img}}" width="518" height="388"></div>
+            {% endif %}  
+            {% if prediction %}
+                <div class="p-2">{{prediction}}</div>
+            {% endif %}                      
+
             <form method="POST" enctype="multipart/form-data" class="p-2">
                 {% csrf_token %}
                 <div class="custom-file">
@@ -20,9 +27,6 @@
                 </div>
             </form>
 
-            {% if prediction %}
-                <div class="p-2">{{prediction}}</div>
-            {% endif %}
         </div>
     </div>
     <div class="d-flex" style="height:33vh"></div>

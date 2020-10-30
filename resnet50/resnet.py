@@ -7,11 +7,11 @@ from keras.applications.imagenet_utils import decode_predictions
 # import matplotlib.pyplot as plt
 import numpy as np
 
+resnet_model = resnet50.ResNet50(weights='imagenet') 
 
 def predict(filename):
 
     # Load Keras' ResNet50 model
-    resnet_model = resnet50.ResNet50(weights='imagenet') 
 
     # Load image and pre-process
     # filename = './kuma.jpg'
@@ -36,4 +36,5 @@ def predict(filename):
     # Making predictions
     predictions_resnet50 = resnet_model.predict(processed_image_resnet50)
     label_resnet50 = decode_predictions(predictions_resnet50)
-    print ('label_resnet50 = ', label_resnet50) 
+    # print ('label_resnet50 = ', label_resnet50) 
+    return label_resnet50[0][0][1]

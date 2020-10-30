@@ -1,5 +1,5 @@
 """
-ASGI config for ResNet50_API project.
+ASGI config for ResNet50_App project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ResNet50_API.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ResNet50_App.settings')
 
 application = get_asgi_application()
