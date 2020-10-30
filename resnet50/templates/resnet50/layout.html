@@ -3,11 +3,9 @@
 <html lang="en">
   <head>
     <title>ResNet 50 Interface</title>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"
-    ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" defer
-    ></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <script src="{% static 'resnet50/js/jquery-3.5.1.min.js'%}"></script>
+    <script src="{% static 'resnet50/js/bootstrap.bundle.min.js'%}" defer></script>
+    <link rel="stylesheet" href="{% static 'resnet50/css/bootstrap.min.css'%}"/>
     {% block stylesheets %} 
     {% endblock stylesheets %}
   </head>
