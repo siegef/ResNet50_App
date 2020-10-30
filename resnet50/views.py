@@ -34,4 +34,5 @@ def index(request):
     return render(request, "resnet50/index.html", {
         'form' : form,
         'prediction' : prediction,
+        'img' : '',
     })
