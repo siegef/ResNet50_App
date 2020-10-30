@@ -31,6 +31,11 @@ def create_image(storage, filename, size=(100, 100), image_mode='RGB', image_for
 class UploadTest(TestCase):
     # Credits to Cynthia Kiser
     # http://blog.cynthiakiser.com/blog/2016/06/26/testing-file-uploads-in-django/
+    def tearDown(self):
+        # Delete test upload
+        files = glob.glob('media/images/*')
+        for file in files:
+            os.remove(file)
 
     def test_image_upload(self):
         myClient = Client()
@@ -44,10 +49,6 @@ class UploadTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(os.path.exists('media/images/front.png')) #Check if file has been uploaded.
 
-        # Delete test upload
-        files = glob.glob('media/images/front*')
-        for file in files:
-            os.remove(file)
 
     def test_uploading_non_image_file_errors(self):
         myClient = Client()
@@ -74,15 +75,14 @@ class UploadTest(TestCase):
         form_data = {'image': avatar_file}
         response = myClient.post(reverse('resnet50:index'), form_data)
         
-
         ## Assert prediction for dog
         self.assertEqual(response.context[0]['prediction'], 'golden_retriever')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(os.path.exists('media/images/dog.png')) #Check if file has been uploaded.
 
-        files = glob.glob('media/images/dog*')
-        for file in files:
-            os.remove(file)        
+        # files = glob.glob('media/images/dog*')
+        # for file in files:
+        #     os.remove(file)        
 
     def test_multiple(self):
         myClient = Client()
@@ -118,6 +118,6 @@ class UploadTest(TestCase):
         self.assertFalse(os.path.exists('media/images/dog.png')) #Check if file has been deleted.
         self.assertTrue(os.path.exists('media/images/cat.png')) #Check if file has been uploaded.
 
-        files = glob.glob('media/images/cat*')
-        for file in files:
-            os.remove(file) 
+        # files = glob.glob('media/images/cat*')
+        # for file in files:
+        #     os.remove(file) 
